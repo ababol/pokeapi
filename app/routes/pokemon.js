@@ -4,6 +4,14 @@ var userRoute = {
   define: function(app, prefixAPI) {
     Pokemon.methods(['get']);
 
+    Pokemon.before('get', function(req, res, next) {
+      if (!req.query.limit || req.query.limit > 10) {
+        req.query.limit = 10;
+      }
+
+      next();
+    });
+
     Pokemon.route('Search.get', function(req, res) {
       var q = req.query.q,
         limit = req.query.limit,
